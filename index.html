@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sphinx Fitness - Your personal fitness and nutrition planning assistant">
+    <title>Sphinx Fitness</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+    <link rel="stylesheet" href="food-analyzer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="container">
+
+        <!-- ============================================================
+             AUTH SECTION — Cinematic CSS Login
+             ============================================================ -->
+        <section id="authSection" aria-labelledby="auth-heading">
+
+            <!-- CSS Animated Background -->
+            <div class="login-bg">
+                <div class="login-bg-base"></div>
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+                <div class="orb orb-3"></div>
+                <div class="orb orb-4"></div>
+                <div class="login-grid"></div>
+                <div class="login-noise"></div>
+                <div class="login-vignette"></div>
+            </div>
+
+            <!-- Animated Particles -->
+            <div class="login-particles" id="loginParticles"></div>
+
+            <!-- Login / Sign Up Cards -->
+            <div class="login-content-wrapper">
+
+                <!-- Login Page -->
+                <div id="loginPage" class="auth-container">
+                    <div class="auth-logo">
+                        <img src="sphinx-logo.jpeg" alt="Sphinx Fitness Logo">
+                        <span class="auth-logo-text">SPHINX</span>
+                    </div>
+                    <h2 id="auth-heading">Welcome Back</h2>
+                    <form id="loginForm" aria-label="Login form">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" placeholder="Enter your username" required aria-required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required aria-required="true">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </form>
+                    <div class="divider"><span>OR</span></div>
+                    <button class="google-btn" onclick="handleGoogleAuth()" aria-label="Sign in with Google">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+                        Continue with Google
+                    </button>
+                    <p>
+                        Don't have an account? <a href="#" id="showSignUp">Sign Up</a>
+                    </p>
+                </div>
+
+                <!-- Sign Up Page -->
+                <div id="signUpPage" class="auth-container hidden">
+                    <div class="auth-logo">
+                        <img src="sphinx-logo.jpeg" alt="Sphinx Fitness Logo">
+                        <span class="auth-logo-text">SPHINX</span>
+                    </div>
+                    <h2>Create Account</h2>
+                    <form id="signUpForm" aria-label="Sign up form">
+                        <div class="form-group">
+                            <label for="newUsername">Username</label>
+                            <input type="text" id="newUsername" placeholder="Choose a username" required aria-required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="newEmail">Email</label>
+                            <input type="email" id="newEmail" placeholder="email@example.com" required aria-required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Password</label>
+                            <input type="password" id="newPassword" placeholder="••••••••" required aria-required="true">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </form>
+                    <div class="divider"><span>OR</span></div>
+                    <button class="google-btn" onclick="handleGoogleAuth()" aria-label="Sign up with Google">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+                        Sign up with Google
+                    </button>
+                    <p>
+                        Already have an account? <a href="#" id="showLogin">Login</a>
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============================================================
+             MAIN APP SECTION
+             ============================================================ -->
+        <main id="mainApp" class="hidden">
+            <!-- ============================================================
+                 FITNESS HERO BANNER
+                 ============================================================ -->
+            <div class="fitness-hero-banner">
+                <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920&q=80" alt="Fitness" loading="lazy">
+                <div class="fitness-hero-overlay"></div>
+                <div class="fitness-hero-content">
+                    <span class="hero-tagline">Transform · Achieve · Dominate</span>
+                    <h1>Your Fitness Journey Starts Now</h1>
+                    <div class="hero-stats-row">
+                        <div class="hero-stat">
+                            <span class="hero-stat-num">500+</span>
+                            <span class="hero-stat-lbl">Exercises</span>
+                        </div>
+                        <div class="hero-stat-divider"></div>
+                        <div class="hero-stat">
+                            <span class="hero-stat-num">AI</span>
+                            <span class="hero-stat-lbl">Powered</span>
+                        </div>
+                        <div class="hero-stat-divider"></div>
+                        <div class="hero-stat">
+                            <span class="hero-stat-num">24/7</span>
+                            <span class="hero-stat-lbl">Access</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <header role="banner">
+                <div class="logo" onclick="showMainContent()" style="cursor:pointer;">
+                    <img src="sphinx-logo.jpeg" alt="Sphinx Fitness Logo">
+                    <span class="logo-text">SPHINX FITNESS</span>
+                </div>
+                <div id="userGreeting" style="font-weight: 600; color: var(--light-text);" role="status"></div>
+                <nav class="nav-controls" aria-label="Main navigation">
+                    <!-- Main Actions Visible on Desktop -->
+                    <div class="nav-main-actions">
+                        <button id="foodScanNavBtn" class="nav-scan-btn" aria-label="Food Health Scanner">🔍 Food Scan</button>
+                        <button id="themeToggle" class="nav-icon-btn" aria-label="Toggle dark mode">🌙</button>
+                    </div>
+
+                    <!-- More Options Menu -->
+                    <div class="nav-more-menu">
+                        <button id="menuToggleBtn" class="nav-icon-btn menu-dots-btn" aria-label="More options">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </button>
+                        <div id="dropdownMenu" class="dropdown-content hidden">
+                            <button id="aboutUsBtn" class="dropdown-item">👥 About Us</button>
+                            <div class="dropdown-divider"></div>
+                            <button id="logoutBtn" class="dropdown-item logout-item">➔ Logout</button>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <!-- =====================================================
+                 ABOUT US PAGE
+                 ===================================================== -->
+            <div id="aboutUsPage" class="hidden">
+                <button class="about-back-btn" id="backFromAbout">← Back to App</button>
+
+                <div class="about-hero">
+                    <h1>Meet Our Team</h1>
+                    <p>The creative minds and developers behind Sphinx Fitness — dedicated to designing and building a modern, user-friendly fitness platform that delivers an engaging digital experience.</p>
+                </div>
+
+                <div class="team-section">
+                    <h2>Our Champions</h2>
+                    <p class="section-subtitle">Hover over each card to learn more about our experts</p>
+
+                    <div class="team-grid">
+
+                        <!-- Team Member 1 -->
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img src="madonna.jpeg" alt="Madonna Fawzy Samir">
+                                    <div class="hover-hint">Hover to flip</div>
+                                    <div class="member-name-overlay">
+                                        <h3>Madonna Fawzy Samir</h3>
+                                        <span>Cyber Security Student</span>
+                                    </div>
+                                </div>
+                                <div class="flip-card-back">
+                                    <img src="madonna.jpeg" alt="Madonna Fawzy Samir" class="back-avatar">
+                                    <h3>Madonna Fawzy</h3>
+                                    <div class="back-role">Second Year Student</div>
+                                    <p class="back-bio">Student at Sphinx University, Faculty of Computers and Artificial Intelligence. Interested in Cyber Security, Networking, and Software Engineering.</p>
+                                    <div class="back-stats">
+                                        
+                                        <div class="back-stat"><span class="num">Networks</span><span class="lbl">Systems</span></div>
+                                        <div class="back-stat"><span class="num">Security</span><span class="lbl">Protection</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Member 2 -->
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img src="minaaa.jpeg" alt="Mina Moheb Wiliam">
+                                    <div class="hover-hint">Hover to flip</div>
+                                    <div class="member-name-overlay">
+                                        <h3>Mina Moheb Wiliam</h3>
+                                        <span>Data Analyst</span>
+                                    </div>
+                                </div>
+                                <div class="flip-card-back">
+                                    <img src="minaa2.jpeg" alt="Mina Moheb Wiliam" class="back-avatar">
+                                    <h3>Mina Moheb</h3>
+                                    <div class="back-role">Second Year Student</div>
+                                    <p class="back-bio">Student at Sphinx University, Faculty of Computers and Artificial Intelligence. Passionate about Data Science, Database Systems, and Modern Technologies.</p>
+                                    <div class="back-stats">
+                                        <div class="back-stat"><span class="num">SQL</span><span class="lbl">Databases</span></div>
+                                        <div class="back-stat"><span class="num">Java</span><span class="lbl">Programming</span></div>
+                                        <div class="back-stat"><span class="num">ML</span><span class="lbl">Learning</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Member 3 -->
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img src="mariam.jpeg" alt="Mariam Zakher Shaker">
+                                    <div class="hover-hint">Hover to flip</div>
+                                    <div class="member-name-overlay">
+                                        <h3>Mariam Zakher Shaker</h3>
+                                        <span>AI Student</span>
+                                    </div>
+                                </div>
+                                <div class="flip-card-back">
+                                    <img src="mariam2.jpeg" alt="Mariam Zakher Shaker" class="back-avatar">
+                                    <h3>Mariam Zakher</h3>
+                                    <div class="back-role">Second Year Student</div>
+                                    <p class="back-bio">Student at Sphinx University, Faculty of Computers and Artificial Intelligence. Passionate about Artificial Intelligence, Data Analysis, and Software Development</p>
+                                    <div class="back-stats">
+                                        <div class="back-stat"><span class="num">Python</span><span class="lbl">Programming</span></div>
+                                        
+                                        <div class="back-stat"><span class="num">SQL</span><span class="lbl">Databases</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Member 4 -->
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <img src="fadyyyy.jpeg" alt="Fady Yohanna Shafeak">
+                                    <div class="hover-hint">Hover to flip</div>
+                                    <div class="member-name-overlay">
+                                        <h3>Fady Yohanna Shafeak</h3>
+                                        <span>Software Developer</span>
+                                    </div>
+                                </div>
+                                <div class="flip-card-back">
+                                    <img src="fadyyy2.jpeg" alt="Fady Yohanna Shafeak" class="back-avatar">
+                                    <h3>Fady Yohanna</h3>
+                                    <div class="back-role">Second Year Student</div>
+                                    <p class="back-bio">Student at Sphinx University, Faculty of Computers and Artificial Intelligence. Interested in Web Development, Problem Solving, and ML technologies.</p>
+                                    <div class="back-stats">
+                                        <div class="back-stat"><span class="num">HTML</span><span class="lbl">Frontend</span></div>
+                                        <div class="back-stat"><span class="num">Python</span><span class="lbl">Coding</span></div>
+                                        <div class="back-stat"><span class="num">AI</span><span class="lbl">Projects</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- =====================================================
+                 MAIN CONTENT (Dashboard)
+                 ===================================================== -->
+            <div id="mainContent">
+                <div class="dashboard-grid">
+                    <!-- Sidebar: User Info & Goals -->
+                    <aside role="complementary" aria-label="User information and statistics">
+                        <div class="card">
+                            <h3 style="margin-bottom: 20px;">Personal Info</h3>
+                            <form id="planForm" aria-label="Personal information form">
+                                <div class="form-group">
+                                    <label for="age">Age</label>
+                                    <input type="number" id="age" value="20" required aria-required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="weight">Weight (kg)</label>
+                                    <input type="number" id="weight" value="83" required aria-required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="height">Height (cm)</label>
+                                    <input type="number" id="height" value="191" required aria-required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="goal">Goal</label>
+                                    <select id="goal" aria-required="true">
+                                        <option value="fitness">General Fitness</option>
+                                        <option value="weight_loss">Weight Loss</option>
+                                        <option value="muscle_gain" selected>Muscle Gain</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Plan</button>
+                            </form>
+                        </div>
+
+                        <div id="statsCard" class="card hidden">
+                            <h3>Your Stats</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-label">BMI</span>
+                                    <span id="bmiValue" class="stat-value" role="status">-</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Daily Kcal</span>
+                                    <span id="caloriesValue" class="stat-value" role="status">-</span>
+                                </div>
+                            </div>
+                            <div class="stat-item" style="margin-top: 15px; width: 100%;">
+                                <span class="stat-label">Fitness Level</span>
+                                <span id="levelValue" class="stat-value" role="status">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Water Tracker -->
+                        <div id="waterTracker" class="card hidden"></div>
+
+                        <!-- Streak Card -->
+                        <div id="streakCard" class="card streak-card hidden"></div>
+
+                        <!-- Workout Stats -->
+                        <div id="workoutStats" class="card hidden">
+                            <h3>🏋️ Workout Stats</h3>
+                        </div>
+                    </aside>
+
+                    <!-- Main Content: Welcome / Plans -->
+                    <section id="welcomeDashboard" class="card" style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;min-height:400px;">
+                        <img src="sphinx-logo.jpeg" alt="Sphinx Logo" style="width:90px;height:90px;object-fit:contain;margin-bottom:20px;border-radius:16px;filter:drop-shadow(0 8px 24px rgba(249,115,22,0.3));">
+                        <h2 style="margin-bottom:15px;background:linear-gradient(135deg,#f97316,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:2rem;">Ready to Conquer Today?</h2>
+                        <p style="color:var(--light-text);max-width:500px;margin-bottom:30px;font-size:1.05rem;">
+                            Fill in your personal information on the left and click <b>"Update Plan"</b> to get your customized nutrition and workout schedule!
+                        </p>
+                        <div id="dailyQuote" style="font-style:italic;color:var(--primary);background:var(--bg);padding:20px;border-radius:12px;border-left:5px solid #f97316;max-width:450px;line-height:1.7;">
+                            "The only bad workout is the one that didn't happen."
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:40px;width:100%;max-width:600px;">
+                            <div class="stat-item" style="background:rgba(249,115,22,0.05);border-color:rgba(249,115,22,0.15);">
+                                <span style="font-size:1.5rem;display:block;margin-bottom:5px;">🥗</span>
+                                <span style="font-weight:700;">Custom Nutrition</span>
+                            </div>
+                            <div class="stat-item" style="background:rgba(16,185,129,0.05);border-color:rgba(16,185,129,0.15);">
+                                <span style="font-size:1.5rem;display:block;margin-bottom:5px;">🏋️</span>
+                                <span style="font-weight:700;">Expert Workouts</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="results" class="hidden" role="main" aria-label="Nutrition and workout plans">
+                        <!-- Calorie Progress -->
+                        <div id="calorieProgressBar" class="card" style="margin-bottom:20px;"></div>
+
+                        <!-- Macros Donut Card -->
+                        <div id="macrosCard" class="card hidden" style="margin-bottom:20px;"></div>
+
+                        <!-- Tabs Navigation -->
+                        <nav class="tabs tabs-extended" role="tablist" aria-label="Plan tabs">
+                            <button id="navNutrition" class="tab-btn active" onclick="switchTab('food', event)" role="tab">🥗 Nutrition</button>
+                            <button id="navWorkout" class="tab-btn" onclick="switchTab('workout', event)" role="tab">🏋️ Workout</button>
+                            <button id="navProgress" class="tab-btn" onclick="switchTab('progress', event)" role="tab">📈 Progress</button>
+                            <button id="navHistory" class="tab-btn" onclick="switchTab('history', event)" role="tab">📅 History</button>
+                        </nav>
+
+                        <!-- Food Tab -->
+                        <section id="foodTab" class="tab-content active" role="tabpanel">
+                            <div class="section-banner">
+                                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80" alt="Nutrition" loading="lazy">
+                                <div class="section-banner-overlay"></div>
+                                <div class="section-banner-text">
+                                    <h2>Today's Nutrition Plan</h2>
+                                    <p>Fuel your body with the right macros</p>
+                                </div>
+                            </div>
+                            <div class="tab-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+                                <h2>Today's Nutrition Plan</h2>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                    <button onclick="openMealBuilder()" class="btn btn-outline" style="width:auto;">🍳 Build Meal</button>
+                                    <button id="regenerateFoodBtn" class="btn btn-outline" style="width:auto;">🔄 New Plan</button>
+                                    </div>
+                            </div>
+
+                            <!-- Favorites section -->
+                                     
+                            <div id="featuredFavorites" class="featured-favorites">
+                                <div class="fav-header">
+                                    <span class="fav-title">⭐ <span data-t="favorites">Favorite Meals</span></span>
+                                </div>
+                                <div id="favoritesList" class="fav-grid"></div>
+                            </div>
+                            <p style="margin-bottom:20px;font-size:0.85rem;color:var(--light-text);background:var(--border);padding:10px;border-radius:8px;">
+                                💡 Each meal shows <b>4 items</b> with full macro breakdown. Double-click any meal to regenerate. Click 🔄 to swap individual items.
+                            </p>
+                            <div id="foodPlan" class="plan-container" role="list"></div>
+                        </section>
+
+                        <!-- Workout Tab -->
+                        <section id="workoutTab" class="tab-content" role="tabpanel">
+                            <div class="section-banner">
+                                <img src="https://images.unsplash.com/photo-1581009137042-c552e485697a?w=1400&q=80" alt="Workout" loading="lazy">
+                                <div class="section-banner-overlay"></div>
+                                <div class="section-banner-text">
+                                    <h2>Weekly Training</h2>
+                                    <p>Build strength, endurance & power</p>
+                                </div>
+                            </div>
+                            <div class="tab-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+                                <h2>Weekly Training</h2>
+                                <button id="regenerateWorkoutBtn" class="btn btn-outline" style="width:auto;">🔄 New Schedule</button>
+                            </div>
+                            <div class="search-container">
+                                <input type="text" id="workoutSearch" placeholder="Search for exercises (e.g. Chest, Squat)..." aria-label="Search exercises">
+                                <div id="searchResults" class="search-results hidden" role="listbox"></div>
+                            </div>
+                            <div id="workoutPlan" class="plan-container" role="list"></div>
+                        </section>
+
+                        <!-- Progress Tab -->
+                        <section id="progressTab" class="tab-content" role="tabpanel"></section>
+
+                        <!-- History Tab -->
+                        <section id="historyTab" class="tab-content" role="tabpanel"></section>
+
+                    </section>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Exercise Detail Modal -->
+    <div id="exerciseModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="exercise-modal-title">
+        <div class="modal-content">
+            <button class="close-modal" aria-label="Close modal" onclick="closeExerciseModal()">&times;</button>
+            <div id="modalBody" role="document"></div>
+            <div id="timerContainer" class="timer-container">
+                <div style="text-align:center;">
+                    <span class="stat-label">Rest / Exercise Timer</span>
+                    <div class="timer-display" role="status" aria-live="polite">00:00</div>
+                    <div class="timer-controls">
+                        <button id="startTimer" class="btn btn-primary" style="width:100px;" aria-label="Start timer">Start</button>
+                        <button id="resetTimer" class="btn btn-outline" style="width:100px;" aria-label="Reset timer">Reset</button>
+                    </div>
+                    <div class="timer-presets" style="margin-top:15px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+                        <button onclick="setTimer(30)" class="btn btn-outline" style="width:auto;padding:5px 15px;" aria-label="30 seconds">30s</button>
+                        <button onclick="setTimer(60)" class="btn btn-outline" style="width:auto;padding:5px 15px;" aria-label="60 seconds">60s</button>
+                        <button onclick="setTimer(90)" class="btn btn-outline" style="width:auto;padding:5px 15px;" aria-label="90 seconds">90s</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Meal Builder Modal -->
+    <div id="builderModal" class="modal hidden" role="dialog" aria-modal="true">
+        <div class="modal-content builder-modal-content">
+            <button class="close-modal" aria-label="Close" onclick="closeMealBuilder()">&times;</button>
+            <div id="builderBody"></div>
+        </div>
+    </div>
+
+    <!-- Food Analyzer Modal -->
+    <div id="foodAnalyzerModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);overflow-y:auto;padding:20px;" role="dialog" aria-modal="true" aria-label="Food Health Analyzer">
+        <div style="max-width:700px;margin:0 auto;background:var(--card-bg);border-radius:16px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.35);">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(239,68,68,0.05));">
+                <div>
+                    <h2 style="font-size:1.2rem;font-weight:800;margin:0;">🔍 Food Health Analyzer</h2>
+                    <p style="color:var(--light-text);font-size:0.82rem;margin:4px 0 0;">Upload any meal, food, or fruit photo for an instant AI health analysis</p>
+                </div>
+                <button id="fa-close-modal" aria-label="Close" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--light-text);line-height:1;padding:4px 8px;">&times;</button>
+            </div>
+            <div style="padding:24px;">
+                <div style="margin-bottom:20px;">
+                    <div class="fa-upload-zone" id="fa-dropzone">
+                        <input type="file" id="fa-file-input" accept="image/*">
+                        <span class="fa-upload-icon">📸</span>
+                        <h3>Drop your food photo here</h3>
+                        <p>or click to browse — JPG, PNG, WEBP supported</p>
+                    </div>
+                    <div class="fa-preview-wrap" id="fa-preview-wrap" style="display:none;">
+                        <img id="fa-preview-img" src="" alt="Food preview">
+                        <div class="fa-preview-actions">
+                            <button class="fa-icon-btn" id="fa-clear-btn">✕ Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="fa-analyze-btn" id="fa-analyze-btn" disabled>
+                    <div class="fa-spinner" id="fa-spinner"></div>
+                    <span id="fa-btn-text">🔍 Analyze Food</span>
+                </button>
+                <div id="fa-result-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="features.js"></script>
+    <script src="food-analyzer.js"></script>
+
+    <script>
+        (function createParticles() {
+            const container = document.getElementById('loginParticles');
+            if (!container) return;
+            const count = 22;
+            const colors = [
+                'rgba(96,165,250,0.22)',
+                'rgba(52,211,153,0.18)',
+                'rgba(167,139,250,0.16)',
+                'rgba(251,191,36,0.14)',
+            ];
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 8 + 3;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 20 + 12;
+                const delay = Math.random() * 18;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                p.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${left}%;
+                    animation-duration: ${duration}s;
+                    animation-delay: -${delay}s;
+                    background: ${color};
+                    border: 1px solid ${color.replace(/[\d.]+\)$/, '0.35)')};
+                    box-shadow: 0 0 ${size * 2}px ${color};
+                `;
+                container.appendChild(p);
+            }
+        })();
+
+        function showMainContent() {
+            const aboutPage = document.getElementById('aboutUsPage');
+            const mainContent = document.getElementById('mainContent');
+            if (aboutPage) aboutPage.classList.add('hidden');
+            if (mainContent) mainContent.classList.remove('hidden');
+        }
+    </script>
+
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+    </script>
+</body>
+</html>

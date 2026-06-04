@@ -1,0 +1,427 @@
+/* ============================================================
+   FOOD ANALYZER — Styles
+   Matches Sphinx Fitness design system (vars from style.css)
+   ============================================================ */
+
+/* ---- API Key Setup Banner ---- */
+.fa-api-banner {
+    background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(16,185,129,0.08));
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.fa-api-banner .fa-api-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.fa-api-banner .fa-api-text {
+    flex: 1;
+    min-width: 200px;
+}
+
+.fa-api-banner .fa-api-text p {
+    font-size: 0.82rem;
+    color: var(--light-text);
+    margin-top: 3px;
+}
+
+.fa-api-key-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.fa-api-key-row input {
+    flex: 1;
+    min-width: 220px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: monospace;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.fa-api-key-row input:focus {
+    border-color: var(--primary);
+}
+
+.fa-api-saved-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(34,197,94,0.12);
+    color: #16a34a;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dark-mode .fa-api-saved-tag {
+    color: #4ade80;
+}
+
+/* ---- Upload Zone ---- */
+.fa-upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.fa-upload-zone:hover,
+.fa-upload-zone.dragover {
+    border-color: var(--primary);
+    background: rgba(59,130,246,0.04);
+    transform: scale(1.005);
+}
+
+.fa-upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.fa-upload-icon {
+    font-size: 2.8rem;
+    margin-bottom: 14px;
+    display: block;
+    opacity: 0.7;
+}
+
+.fa-upload-zone h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.fa-upload-zone p {
+    font-size: 0.85rem;
+    color: var(--light-text);
+}
+
+/* ---- Preview Area ---- */
+.fa-preview-wrap {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.fa-preview-wrap img {
+    width: 100%;
+    max-height: 360px;
+    object-fit: cover;
+    display: block;
+}
+
+.fa-preview-actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.fa-icon-btn {
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.fa-icon-btn:hover {
+    background: rgba(0,0,0,0.75);
+}
+
+/* ---- Analyze Button ---- */
+.fa-analyze-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    letter-spacing: 0.3px;
+    margin-bottom: 28px;
+}
+
+.fa-analyze-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.fa-analyze-btn:not(:disabled):hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* ---- Spinner ---- */
+.fa-spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: fa-spin 0.7s linear infinite;
+    display: none;
+}
+
+.fa-spinner.active { display: inline-block; }
+
+@keyframes fa-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---- Result Card ---- */
+.fa-result {
+    animation: fa-fadeUp 0.4s ease both;
+}
+
+@keyframes fa-fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Verdict Banner ---- */
+.fa-verdict {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 22px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.fa-verdict.healthy {
+    background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(16,185,129,0.08));
+    border: 1px solid rgba(34,197,94,0.3);
+}
+
+.fa-verdict.unhealthy {
+    background: linear-gradient(135deg, rgba(239,68,68,0.10), rgba(249,115,22,0.07));
+    border: 1px solid rgba(239,68,68,0.28);
+}
+
+.fa-verdict-icon {
+    font-size: 2.6rem;
+    flex-shrink: 0;
+}
+
+.fa-verdict-text h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.fa-verdict.healthy .fa-verdict-text h3 { color: #16a34a; }
+.fa-verdict.unhealthy .fa-verdict-text h3 { color: #dc2626; }
+
+.dark-mode .fa-verdict.healthy .fa-verdict-text h3 { color: #4ade80; }
+.dark-mode .fa-verdict.unhealthy .fa-verdict-text h3 { color: #f87171; }
+
+.fa-verdict-text p {
+    font-size: 0.9rem;
+    color: var(--light-text);
+    line-height: 1.5;
+}
+
+/* ---- Health Score Bar ---- */
+.fa-score-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.fa-score-label {
+    font-size: 0.82rem;
+    color: var(--light-text);
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.fa-score-bar-wrap {
+    flex: 1;
+    height: 10px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.fa-score-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 1s cubic-bezier(.22,.68,0,1.2);
+}
+
+.fa-score-value {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+/* ---- Nutrition Macros Grid ---- */
+.fa-macros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.fa-macro-chip {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.fa-macro-chip:hover { transform: translateY(-2px); }
+
+.fa-macro-chip .fa-m-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text);
+    display: block;
+}
+
+.fa-macro-chip .fa-m-label {
+    font-size: 0.72rem;
+    color: var(--light-text);
+    margin-top: 3px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ---- Info Lists (benefits / concerns / alternatives / tips) ---- */
+.fa-info-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+    .fa-info-sections { grid-template-columns: 1fr; }
+}
+
+.fa-info-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+}
+
+.fa-info-block h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fa-info-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.fa-info-block ul li {
+    font-size: 0.87rem;
+    color: var(--light-text);
+    display: flex;
+    gap: 8px;
+    line-height: 1.4;
+}
+
+.fa-info-block ul li::before {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.fa-info-block.green h4 { color: #16a34a; }
+.fa-info-block.red   h4 { color: #dc2626; }
+.fa-info-block.blue  h4 { color: #2563eb; }
+.fa-info-block.amber h4 { color: #d97706; }
+
+.dark-mode .fa-info-block.green h4 { color: #4ade80; }
+.dark-mode .fa-info-block.red   h4 { color: #f87171; }
+.dark-mode .fa-info-block.blue  h4 { color: #60a5fa; }
+.dark-mode .fa-info-block.amber h4 { color: #fbbf24; }
+
+/* ---- Error Box ---- */
+.fa-error {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.28);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    color: #dc2626;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: fa-fadeUp 0.3s ease;
+}
+
+.dark-mode .fa-error { color: #f87171; }
+
+/* ---- Section separator ---- */
+.fa-section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--light-text);
+    margin-bottom: 10px;
+    margin-top: 4px;
+}
