@@ -110,7 +110,11 @@
             const data = await res.json();
 
             if (!res.ok) {
-                showFAError('❌ ' + (data?.error || 'Server error. Please try again.'));
+                if (res.status === 429) {
+                    showFAError('⏳ Rate limit reached. Please wait a moment and try again.');
+                } else {
+                    showFAError('❌ ' + (data?.error || 'Server error. Please try again.'));
+                }
                 return;
             }
 
@@ -211,12 +215,28 @@
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFoodAnalyzer(); });
 
         const fileInput = $('fa-file-input');
+        const cameraInput = $('fa-camera-input');
         if (fileInput) fileInput.addEventListener('change', e => {
             if (e.target.files?.[0]) handleFile(e.target.files[0]);
         });
+        if (cameraInput) cameraInput.addEventListener('change', e => {
+            if (e.target.files?.[0]) handleFile(e.target.files[0]);
+        });
+
+        // Browse & Camera are now <label for="..."> elements — browser handles opening
+        // the file picker natively. Just stop click from bubbling to dropzone.
+        const browseBtn = $('fa-browse-btn');
+        if (browseBtn) browseBtn.addEventListener('click', e => e.stopPropagation());
+        const cameraBtn = $('fa-camera-btn');
+        if (cameraBtn) cameraBtn.addEventListener('click', e => e.stopPropagation());
 
         const dz = $('fa-dropzone');
         if (dz) {
+            dz.addEventListener('click', e => {
+                // Only open generic file picker if clicking the zone itself, not a label/input
+                if (e.target.closest('.fa-zone-btn') || e.target.tagName === 'INPUT') return;
+                fileInput && fileInput.click();
+            });
             dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
             dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
             dz.addEventListener('drop', e => {
