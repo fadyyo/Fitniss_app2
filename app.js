@@ -50,7 +50,7 @@ function injectDeleteBtnStyles() {
 
 function initTheme() {
     injectDeleteBtnStyles();
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark for cinematic feel
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         const t = document.getElementById('themeToggle');
@@ -229,7 +229,7 @@ function generateSingleMeal(mealName, targetRatio) {
     if (!FOODS[category]) category = 'snacks';
     
     // Pick 4 unique random items from the specific meal category
-    const items = getUniqueRandomItems(FOODS[category], 3);
+    const items = getUniqueRandomItems(FOODS[category], 2);
     
     return {
         name: mealName,
@@ -652,11 +652,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const weight = parseFloat(document.getElementById('weight').value);
             const height = parseFloat(document.getElementById('height').value);
             const goal = document.getElementById('goal').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
 
             if (!age || !weight || !height || !goal) return;
 
             const bmi = (weight / ((height/100)**2)).toFixed(1);
-            const bmr = 10 * weight + 6.25 * height - 5 * age - 80;
+            
+            // Revised Harris-Benedict Equation for BMR
+            let bmr;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+            bmr = Math.round(bmr);
+
             const baseCalories = bmr * 1.2;
             currentDailyCalories = Math.round(goal === 'weight_loss' ? baseCalories * 0.85 : goal === 'muscle_gain' ? baseCalories * 1.15 : baseCalories);
             
@@ -664,8 +674,11 @@ document.addEventListener('DOMContentLoaded', () => {
             currentFitnessLevel = fitnessLevel;
 
             document.getElementById('bmiValue').textContent = bmi;
-            document.getElementById('caloriesValue').textContent = currentDailyCalories + ' kcal';
+            document.getElementById('bmrValue').textContent = bmr;
+            document.getElementById('caloriesValue').textContent = currentDailyCalories;
             document.getElementById('levelValue').textContent = fitnessLevel;
+            
+
 
             generateFullFoodPlan();
             generateWorkoutPlan(fitnessLevel);
@@ -736,6 +749,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('authSection').classList.remove('hidden');
         document.getElementById('mainApp').classList.add('hidden');
     }
+    
+
 });
 
 function switchTab(tabName, event) {
@@ -744,6 +759,8 @@ function switchTab(tabName, event) {
     document.getElementById(tabName + 'Tab').classList.add('active');
     if (event) event.currentTarget.classList.add('active');
 }
+
+
 
 // ============================================
 // WATER INTAKE TRACKER
@@ -813,7 +830,15 @@ function updateWaterDisplay() {
 // ============================================
 
 function calculateTotalCalories() {
-    const totalConsumed = currentFoodPlan.reduce((sum, meal) => sum + meal.actualCalories, 0);
+    const totalConsumed = currentFoodPlan.reduce((sum, meal) => {
+        const mealMacros = meal.items.reduce((m, it) => {
+            m.p += Number(it.protein) || 0;
+            m.c += Number(it.carbs) || 0;
+            m.f += Number(it.fat) || 0;
+            return m;
+        }, { p: 0, c: 0, f: 0 });
+        return sum + (mealMacros.p * 4 + mealMacros.c * 4 + mealMacros.f * 9);
+    }, 0);
     const progressCard = document.getElementById('calorieProgressBar');
     if (!progressCard) return;
 
@@ -1091,4 +1116,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+    
+    // Header Scroll Animation
+    const header = document.querySelector('header');
+    let lastScrollTop = 0;
+    
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+        
+        lastScrollTop = scrollTop;
+    }, false);
 });
