@@ -131,7 +131,7 @@ function handleGoogleAuth() {
     ];
     
     content.innerHTML = `
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="40" style="margin-bottom: 15px;">
+        <img src="https://www.gstatic.com/firebaseui/2.0.0/auth/google.svg" width="40" style="margin-bottom: 15px;">
         <h3 style="margin-bottom: 10px; color: #333;">Choose an account</h3>
         <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">to continue to Sphinx Fitness</p>
         <div id="google-accounts-list"></div>
